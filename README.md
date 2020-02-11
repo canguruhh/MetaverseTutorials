@@ -51,8 +51,7 @@ Please follow the "Environment Setup" instructions below before starting.
 
 # Environment Setup
 
-Start by entering the "playground" directory. This is where you can build ALL your Metaverse apps during the tutorial.
-
+Start by entering the `playground` directory. This is where you can build ALL your Metaverse apps during the tutorial.
 ```
 cd tutorials/playground
 ```
