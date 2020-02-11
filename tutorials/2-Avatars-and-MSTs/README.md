@@ -97,7 +97,9 @@ async function registerAvatar(avatar_name,avatar_address) {
 Create a function to look up an avatar address
 
 ```
-
+function getAvatar(avatar) {
+  return blockchain.avatar.get(avatar);
+}
 ```
 
 
