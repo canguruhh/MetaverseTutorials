@@ -1,8 +1,6 @@
 # MetaverseTutorials
 Step by step tutorials for the Metaverse Blockchain
 
-This is a Metaverse Tutorial series
-
 This is a series of Metaverse tutorials. To begin clone this repository
 
 ```
