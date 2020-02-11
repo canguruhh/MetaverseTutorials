@@ -6,7 +6,7 @@ This is a Metaverse Tutorial series
 This is a series of Metaverse tutorials. To begin clone this repository
 
 ```
-git clone https://github.com/antron3000/MetaverseTutorials.git
+git clone https://github.com/mvs-org/MetaverseTutorials.git
 
 ```
 
