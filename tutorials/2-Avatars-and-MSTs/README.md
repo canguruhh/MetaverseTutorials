@@ -4,8 +4,8 @@ In this tutorial you will learn how to
 
 * Register an Avatar
 * Verify an Avatar against an address
-* Customize and Issue an MST from your Avatar
-* Check your MST Balances
+* Customize and issue an MST from your Avatar
+* Check your MST balances
 * Transfer MSTs programatically
 * Integrate Avatar and MST functionality into your app
 
@@ -13,13 +13,13 @@ In this tutorial you will learn how to
 ## Introduction
 
 **Avatars** are digital representations of personal identities -- **digital identitites (DIDs)** -- that exist on the Metaverse Blockchain.
-Avatars have unique alphanumeric symbols. An Avatar is attached to a exactly one Metaverse Address (i.e there can only be at most one Avatar per address).
+Avatars have unique alphanumeric symbols. An Avatar is attached to exactly one Metaverse address (i.e there can only be at most one Avatar per address).
 Transfer of tokens can be done by referring to Avatars instead of addresses.
 
 For more info on Avatars, visit this [article](https://medium.com/metaverse-blockchain/metaverse-explained-avatars-57be355d42d4).
 
 **Metaverse Smart Token (MST)** is Metaverse's fungible token standard. MSTs can be seen as sub-currencies on the Metaverse Blockchain.
-It costs 10 ETP to create a MST. The creation and issuance of a MST must be done through an Avatar (i.e. to issue a token, you can't just use a Metaverse address that's not already tied to an Avatar).
+It costs 10 ETP to create an MST. The creation and issuance of an MST must be done through an Avatar (i.e. to issue a token, you can't just use a Metaverse address that's not already tied to an Avatar).
 Again, ETP and other Metaverse Smart Tokens (MSTs) can be sent to Avatars instead of addresses.
 
 There are other things an Avatar can or cannot do and such limitations are defined through a system of **Certificates**. There are three types of certificates on Metaverse: Domain Certificate, Secondary Issue Certificate and Naming Certificate. For more details on what they do, check out this [article](https://medium.com/metaverse-blockchain/metaverse-explained-certificates-b84767d1ae8f).
@@ -68,8 +68,7 @@ First let's create an html front-end
 </html>
 ```
 
-Now, create a function to register your avatar
-
+Now, create a function to register your Avatar. Remember, you'll have to initialize the `wallet` object first (see the previous tutorial).
 ```
 async function registerAvatar(avatar_name,avatar_address) {
 
@@ -79,7 +78,7 @@ async function registerAvatar(avatar_name,avatar_address) {
     let utxos = await Metaverse.output.calculateUtxo(txs.transactions, [avatar_address]) //Get all utxo for the avatar address
     let result = await Metaverse.output.findUtxo(utxos, {}, height, 100000000) //Collect utxo to pay for the fee of 1 ETP
     let tx = await Metaverse.transaction_builder.issueDid(result.utxo, avatar_address, avatar_name, change_address, result.change, 80000000, 'testnet')
-    tx= await wallet.sign(tx)
+    tx = await wallet.sign(tx)
     tx = await tx.encode()
     tx = await tx.toString('hex')
     tx = await blockchain.transaction.broadcast(tx)
@@ -116,7 +115,7 @@ async function issueMST(issuer,symbol,max_supply,decimalPrecision,issuer,descrip
 }
 ```
 
-Create a function to get MST balance
+Create a function to get your MST balance
 ```
 async function getBalances(){
   let wallet = await Metaverse.wallet.fromMnemonic(mnemonic, 'testnet')
@@ -132,7 +131,6 @@ async function getBalances(){
 
 
 Create a function to transfer MSTs
-
 ```
 async function transferMST() {
   let height = await blockchain.height()
@@ -160,7 +158,7 @@ Also reference your `tut2.js` file.
 
 Verify that you have connected metaverse to the webapp by opening the browser console and typing "Metaverse". You should see the Metaverse object come up.
 
-Next connect elements to the js functions and youre done!
+Next connect elements to the js functions and you're done!
 
-## What's next?
+## What's Next?
 Continue with the next tutorial and learn how to work with [Metaverse Identifiable Token (MIT)](../3-MITs)

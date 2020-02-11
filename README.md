@@ -1,10 +1,10 @@
-# MetaverseTutorials
+# Metaverse Tutorials
 Step by step tutorials for the Metaverse Blockchain
 
 This is a series of Metaverse tutorials. To begin, clone this repository
 
 ```
-git clone https://github.com/antron3000/MetaverseTutorials.git
+git clone https://github.com/mvs-org/MetaverseTutorials.git
 ```
 
 Navigate to the tutorial directory
@@ -29,23 +29,23 @@ cd mvs-blockchain-js && npm install
 ```
 
 
-Each tutorial builds on the previous ones, so it is recommended to do them in order.
+Each tutorial builds on the previous one, so it is recommended to do them in order.
 
 Tutorial Information:
 
-These tutorials are designed
-* to be simple, no fluff
-* hands-on
-* explain inner workings and give broad understanding of Metaverse blockchain
-* Show you step by step how to create dApp on Metaverse. Can also be used to integrate into your existing app.
-* provide working examples of what you should have built.
-* each tutorial comes with complete solutions to show you how its done in the end. Don't look till you're done!
+These tutorials are designed to:
+* Be simple, no fluff
+* Be hands-on
+* Explain the inner workings and give us a broad understanding of the Metaverse blockchain
+* Show you step-by-step how to create dApps on Metaverse and how they can be used to integrate into your existing dApp
+* Each tutorial comes with complete solutions to show you how it's done in the end. Don't look till you're done!
 
-1. [Integrate Metaverse wallet into your dapp with your DID](tutorials/1-Metaverse-Wallet)
-2. [Issue and transfer MST’s](tutorials/2-Avatars-and-MSTs)
-3. [Issue and transfer MIT’s](tutorials/3-MITs)
+1. [Integrate Metaverse wallet into your dApp with your DID](tutorials/1-Metaverse-Wallet)
+2. [Issue and transfer MST](tutorials/2-Avatars-and-MSTs)
+3. [Issue and transfer MIT](tutorials/3-MITs)
 
-For more information refer to the [Metaverse Documentation](https://docs.mvs.org/docs/)
+For more information refer to the [Metaverse Documentation](https://docs.mvs.org/docs/).
+Also check out some working examples in the `./examples` folder.
 
 Please follow the "Environment Setup" instructions below before starting.
 
@@ -63,11 +63,11 @@ Create a testScript
 touch testScript.js
 ```
 
-To interact with Metaverse using javascript you can interact with `mvs-blockchain-js` and `metaversejs`
+To interact with Metaverse using javascript you can interact with `mvs-blockchain-js` and `metaversejs`.
 
 For use in nodejs scripts, import `mvs-blockchain` from the `mvs-blockchain` folder, and require `metaversjs`.
 
-Inside the testscript, add
+Inside the testscript, add the following. You will be using the `blockchain` and `Metaverse` objects later in the other tutorials.
 
 ```
 //import mvs-blockchain-js
@@ -93,7 +93,7 @@ Now run
 node testScript.js
 ```
 
-**Interact with metaverse via webapp**
+**Interact with metaverse via web app**
 
 First create an html file
 ```
@@ -115,13 +115,13 @@ and add
 ```
 
 
-To interact with webapps you must generate `index.js` from `mvs-blockchain-js` and `metaverse.min.js` from `metaversejs`. To generate these files you must clone each repository and simply run
+To interact with web apps you must generate `index.js` from `mvs-blockchain-js` and `metaverse.min.js` from `metaversejs`. To generate these files you must clone each repository and simply run
 
 ```
 grunt
 ```
 
-This will generate javascript files into the `/dist` folder that you can import into your app.  You don't have to worry about this for now. We have generated these files and placed them in the playground folder. To include them in your webapp just add these script tags into your html page.
+This will generate javascript files into the `/dist` folder that you can import into your app.  You don't have to worry about this for now. We have generated these files and placed them in the playground folder. To include them in your web app, just add these script tags into your html page.
 
 ```
 <script src = "metaverse.min.js"></script>
@@ -134,7 +134,6 @@ python -m SimpleHTTPServer 4444
 ```
 
 To test that the libraries have been successfully imported into your webpage, open the web console and enter
-
 ```
 blockchain = await Blockchain({url: "https://explorer-testnet.mvs.org/api/"})
 

@@ -1,27 +1,28 @@
 # Tutorial 1 - Metaverse Wallet
 
-In this tutorial you will learn how to
+In this tutorial you will learn how to:
 
 * Create a Metaverse wallet
-* Import an Existing wallet
+* Import an existing wallet
 * Check your ETP balance
 * Send transactions programatically
-* Integrate wallet into your dApp
+* Integrate a wallet into your dApp
 
 ## Introduction
 
-Metaverse is a UTXO based blockchain, with ETP being the native currency. It is very close to the way Bitcoin works.
+Metaverse is an **unspent-transaction-output (UTXO)** based blockchain with ETP being the native currency. It is very similar to the way Bitcoin works.
 
-Every time you receive a transaction, it becomes a UTXO.
-Every time you send a transaction, you collect UTXO's into a transaction input,
+Every time you send a transaction, you collect UTXOs into a transaction input,
 which becomes a UTXO on the receivers end, and the change left over becomes a UTXO on your end.
 
-If this sounds complicated don't worry. Metaverse's library manages UTXO's for you.
+Every time you receive a transaction, it's a UTXO you can spend.
 
-For more information on UTXO's [look here](https://komodoplatform.com/whats-utxo/)
+If this sounds complicated, don't worry. Metaverse's library manages UTXOs for you.
+
+For more information on UTXOs, [look here](https://komodoplatform.com/whats-utxo/)
 
 To send and receive ETP you need a Metaverse wallet.
-In Metaverse, as with Bitcoin, you can generate deterministic wallets using by memnonic code words. 
+In Metaverse, as with Bitcoin, you can generate deterministic wallets by using memnonic code words. 
 This gives you multiple addresses you can send and recieve transactions from.
 
 ## Hands-on Tutorial
@@ -29,7 +30,6 @@ This gives you multiple addresses you can send and recieve transactions from.
 Note: Explicit detailed instructions are given to work with Metaverse, but not always so with HTML elements. If you get stuck with coding HTML elements, you can always refer to [w3schools.com](https://www.w3schools.com/)
 
 Start by setting up a directory to work in
-
 ```
 cd MetaverseTutorials/tutorials/playground
 touch tut1.html
@@ -37,7 +37,6 @@ touch tut1.js
 ```
 
 Open `tut1.html` and use this HTML front-end as the base of your app.
-
 ```
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -79,10 +78,10 @@ You should now be set up to use the Metaverse javascript libraries. We are using
 
 First let's define some key variables
 ```
-var wallet        //An object representing your Metaverse Wallet
-var mnemonic      //A mnemonic code word used to generate your Wallet
+var wallet        //An object representing your Metaverse wallet
+var mnemonic      //A mnemonic code word used to generate your wallet
 var addresses     //An array containing addresses belonging to the wallet
-var balances      //A JSON object containing Wallet balances
+var balances      //A JSON object containing wallet balances
 ```
 
 Start by creating a function to generate a new mnemonic
@@ -103,12 +102,11 @@ async function createWallet(){
 
 Once you've created a wallet you must get some testnet ETP from the [testnet faucet](https://free.mvs.org/).
 
-A function to get Wallet balances
-
+A function to get wallet balances. Note: this is the blockchain object you initialized before.
 ```
 async function getETPBalance(){
 
-  //Get the lastest Blockchain Length
+  //Get the latest blockchain length
   let height = await blockchain.height()  
 
   //Get a list of wallet transactions
@@ -117,7 +115,7 @@ async function getETPBalance(){
   //Get a list of unspent transaction outputs amongst your transactions   
   let utxo = await Metaverse.output.calculateUtxo(txs.transactions, addresses)    
 
-  //Calculate your balances based on the utxos
+  //Calculate your balances based on the UTXOs
   let balances = await blockchain.balance.all(utxo, addresses, height)
 
   let ETPBalance = balances.ETP.available
@@ -126,8 +124,7 @@ async function getETPBalance(){
 }
 ```
 
-And Finally a function to send ETP
-
+And finally, a function to send ETP
 ```
 async function sendETP(amount){
 
@@ -145,7 +142,7 @@ async function sendETP(amount){
   //Get a list of wallet transactions
   let txs = await blockchain.addresses.txs(addresses)
 
-  //Get all utxo
+  //Get all utxos
   let utxos = await Metaverse.output.calculateUtxo(txs.transactions, addresses)
 
   //Collect enough utxos to pay for the transfer
@@ -160,7 +157,7 @@ async function sendETP(amount){
   //Encode the transaction into bytecode
   tx = await tx.encode()
 
-  //Broadcast the transaction to the metaverse network.
+  //Broadcast the transaction to the Metaverse network.
   tx = await blockchain.transaction.broadcast(tx.toString('hex'))
 
   console.log("tx hash: ")
@@ -201,9 +198,9 @@ node tut1.js
 You should see an ETP balance, and a transaction hash in your terminal. You can take the transaction hash and view the transaction in the [Metaverse Testnet Blockchain Explorer](https://explorer-testnet.mvs.org/).
 
 
-## Connect to Dapp
+## Connect to DApp
 
-To interact with `metaversejs` in your webapp, you need to reference `metaversejs` in your HTML.
+To interact with `metaversejs` in your web app, you need to reference `metaversejs` in your HTML.
 ```
 <script type="text/javascript" src="/dist/metaverse.min.js"></script>
 ```
@@ -219,9 +216,9 @@ python -m SimpleHTTPServer 3333
 ```
 or however you prefer.
 
-Verify that you have connected metaverse to the webapp by opening the browser console and typing "Metaverse". You should see the Metaverse object come up.
+Verify that you have connected Metaverse to the web app by opening the browser console and typing "Metaverse". You should see the Metaverse object come up.
 
 Now connect elements to the js functions and you're done!
 
-## What's next?
+## What's Next?
 Continue with the next tutorial and learn how to [issue and transfer Metaverse Smart Token (MST)](../2-Avatars-and-MSTs)

@@ -1,25 +1,24 @@
 # Tutorial 3 - Metaverse Identifiable Token (MIT)
 
-In this tutorial you will learn how to
+In this tutorial you will learn
 
-* What a MIT is
-* how to customize and issue an MIT from your avatar
-* Transfer MITs programatically
-* Verify a hash stored in the MITs content
-* Integrate MITs into your app
+* What an MIT is
+* How to customize and issue an MIT from your Avatar
+* How to transfer MITs programatically
+* How to verify a hash stored in the MITs content
+* How to integrate MITs into your app
 
 
 ## Introduction
 
-MIT stands for **Metaverse Identifiable Token**. MIT is Metaverse's non-fungible token standard. You can think of them as single Issue Assets with a unique identifying symbol. MITs can also store a content string.
+MIT stands for **Metaverse Identifiable Token**. MIT is Metaverse's non-fungible token standard. You can think of it as a single-issue asset with a unique identifying symbol. An MIT can also store a content string.
 
-What are they used for
-MITs can be used to:
-* represent real world assets
-* represent virtual assets
-* store data on the Metaverse Blockchain such as cryptographic hashes
+MITs can be used to
+* Represent real world assets
+* Represent virtual assets
+* Store data on the Metaverse Blockchain such as cryptographic hashes
 
-MITs can be transferred between Avatars. And like with MST issuance, only Avatars can issue MITs
+MITs can be transferred between Avatars. Just like with MST issuance, only Avatars can issue MITs.
 
 ## Hands-on Tutorial
 
@@ -38,7 +37,7 @@ First let's create an html front-end
     <input placeholder = "MIT Symbol" ></input><br>
     <input placeholder = "Content" ></input><br>
     <select>Avatar</select><br>
-    <label placeholder = "recipient Address" ></label>
+    <label placeholder = "Recipient Address" ></label>
 
     <h3> Display MITs</h3>
 
@@ -59,7 +58,7 @@ First let's create an html front-end
 
     <h3> Verify File </h3>
 
-    <label>upload</label><br>
+    <label>Upload</label><br>
     <select>MIT</select><br>
     <button>Verify</button>
 
@@ -77,7 +76,7 @@ let recipient_address =  wallet.getAddress(1)
 let change_address = wallet.getAddress(1)
 let height = await blockchain.height()
 let txs = await blockchain.addresses.txs([address])
-let utxos = await Metaverse.output.calculateUtxo(txs.transactions, [address]) //Get all utxo
+let utxos = await Metaverse.output.calculateUtxo(txs.transactions, [address]) //Get all utxos
 let result = await Metaverse.output.findUtxo(utxos, target, height) //Collect utxo for given target
 let tx = await Metaverse.transaction_builder.registerMIT(result.utxo, recipient_address, description, symbol, content, change_address, result.change)
 tx = await wallet.sign(tx)
@@ -106,7 +105,7 @@ tx = await blockchain.transaction.broadcast(tx.toString('hex')))
 console.log(tx)
 ```
 
-Create a function to verify a MIT content hash
+Create a function to verify an MIT content hash
 ```
 function getMIT(symbol) {
    return blockchain.MIT.get(symbol)
@@ -115,7 +114,7 @@ function getMIT(symbol) {
 
 ## Connect to your dApp
 
-To interact with `metaversejs` in your webapp, you need to reference `metaversejs` in your HTML.
+To interact with `metaversejs` in your web app, you need to reference `metaversejs` in your HTML.
 ```
 <script type="text/javascript" src="/dist/metaverse.min.js"></script>
 ```
@@ -126,12 +125,12 @@ Also reference your `tut3.js` file.
 <script type="text/javascript" src="tut3.js"></script>
 ```
 
-Verify that you have connected metaverse to the webapp by opening the browser console and typing "Metaverse". You should see the Metaverse object come up!
+Verify that you have connected metaverse to the web app by opening the browser console and typing "Metaverse". You should see the Metaverse object come up!
 
-Next connect elements to the js functions and youre done!
+Next connect elements to the js functions and you're done!
 
-## What's next?
+## What's Next?
 
-You have completed the Metaverse Tutorial series. For further information checkout the [examples](https://github.com/antron3000/MetaverseTutorials/tree/master/examples) section or read the official [Metaverse Documentation](https://docs.mvs.org).
+You have completed the Metaverse Tutorial series. For further information, check out the [examples](https://github.com/mvs-org/MetaverseTutorials/tree/master/examples) section or read the official [Metaverse Documentation](https://docs.mvs.org).
 
 Join the Metaverse developer community today and build amazing dApps! 
