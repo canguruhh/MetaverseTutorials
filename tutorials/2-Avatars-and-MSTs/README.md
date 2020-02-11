@@ -1,4 +1,4 @@
-# Tutorial 2 - Avatars and Smart Token
+# Tutorial 2 - Avatars and Metaverse Smart Tokens (MST)
 
 In this tutorial you will learn how to
 
@@ -6,29 +6,27 @@ In this tutorial you will learn how to
 * Verify an Avatar against an address
 * Customize and Issue an MST from your Avatar
 * Check your MST Balances
-* Transfer MST's programatically
+* Transfer MSTs programatically
 * Integrate Avatar and MST functionality into your app
 
 
 ## Introduction
 
-Avatars are digital representations of personal Identities that exist on the Metaverse Blockchain
-Avatars have an alphanumeric symbol.
-Avatars get attached to a Metaverse Address. There can only be one Avatar per address.
-ETP and smart tokens can be sent to avatars instead of addresses.
-MST's and MIT's can only be issued by Avatars
+**Avatars** are digital representations of personal identities -- **digital identitites (DIDs)** -- that exist on the Metaverse Blockchain.
+Avatars have unique alphanumeric symbols. An Avatar is attached to a exactly one Metaverse Address (i.e there can only be at most one Avatar per address).
+Transfer of tokens can be done by referring to Avatars instead of addresses.
 
-For more info: https://medium.com/metaverse-blockchain/metaverse-explained-avatars-57be355d42d4
+For more info on Avatars, visit this [article](https://medium.com/metaverse-blockchain/metaverse-explained-avatars-57be355d42d4).
 
-MST's are Metaverse Smart Tokens. MST is Metaverse's fungible token standard. MST's can be seen as subcurrencies on the Metaverse Blockchain.
-It costs 10 ETP to create an MST. MST's must be issued by an avatar.
+**Metaverse Smart Token (MST)** is Metaverse's fungible token standard. MSTs can be seen as sub-currencies on the Metaverse Blockchain.
+It costs 10 ETP to create a MST. The creation and issuance of a MST must be done through an Avatar (i.e. to issue a token, you can't just use a Metaverse address that's not already tied to an Avatar).
+Again, ETP and other Metaverse Smart Tokens (MSTs) can be sent to Avatars instead of addresses.
 
-Avatar certifications
+There are other things an Avatar can or cannot do and such limitations are defined through a system of **Certificates**. There are three types of certificates on Metaverse: Domain Certificate, Secondary Issue Certificate and Naming Certificate. For more details on what they do, check out this [article](https://medium.com/metaverse-blockchain/metaverse-explained-certificates-b84767d1ae8f).
 
-## Hands on Tutorial
+## Hands-on Tutorial
 
-First lets create an html front end
-
+First let's create an html front-end
 ```
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -43,23 +41,21 @@ First lets create an html front end
     <input placeholder="Avatar Name"></input>
     <label>Avatar Address</label> <select></select>
     <button>Register</button>
-
-<button></button>
+    
     <h3> Issue MST </h3>
 
     <input placeholder="symbol"></input> <br>
-
     <input placeholder="max_supply"></input>
-
     <button>Issue</button>
 
     <h3> Balances </h3>
-
+    
     <table>
-      <th>MST</th>
-      <th>Issuer</th>
-      <th>Amount</th>
-
+      <tr>
+        <th>MST</th>
+        <th>Issuer</th>
+        <th>Amount</th>
+      </tr>
     </table>
 
     <h3> Send MST </h3>
@@ -70,12 +66,9 @@ First lets create an html front end
 
   </body>
 </html>
-
 ```
 
-nodejs
-
-Create a function to register your avatar.
+Now, create a function to register your avatar
 
 ```
 async function registerAvatar(avatar_name,avatar_address) {
@@ -91,7 +84,6 @@ async function registerAvatar(avatar_name,avatar_address) {
     tx = await tx.toString('hex')
     tx = await blockchain.transaction.broadcast(tx)
 }
-
 ```
 
 Create a function to look up an avatar address
@@ -106,32 +98,26 @@ function getAvatar(avatar) {
 Create a function to issue an MST
 
 ```
-
 async function issueMST(issuer,symbol,max_supply,decimalPrecision,issuer,description){
-
-
 
   var recipient_address = issuer;
   var change_address = issuer;
-
 
   let wallet = await Metaverse.wallet.fromMnemonic("lunar there win define minor shadow damage lounge bitter abstract sail alcohol yellow left lift vapor tourist rent gloom sustain gym dry congress zero")
   let txs = await blockchain.addresses.txs(wallet.getAddresses())
   let utxos = await Metaverse.transaction_builder.calculateUtxo(txs.transactions, wallet.getAddresses()) //Get all utxo
   let result = await Metaverse.transaction_builder.findUtxo(utxos, {}, Metaverse.transaction.ASSET_ISSUE_DEFAULT_FEE) //Collect utxo for given target
   let tx = await Metaverse.transaction_builder.issue(result.utxo, recipient_address, symbol, max_supply, precision, issuer, description, change_address, result.change)
+
   tx = await wallet.sign(tx)
   tx = await tx.encode()
   console.log(tx.toString('hex'));
 
 }
-
 ```
 
 Create a function to get MST balance
-
 ```
-
 async function getBalances(){
   let wallet = await Metaverse.wallet.fromMnemonic(mnemonic, 'testnet')
   let height = await blockchain.height()
@@ -141,12 +127,11 @@ async function getBalances(){
   let utxo = await Metaverse.output.calculateUtxo(txs.transactions, wallet.getAddresses())
   let balances = await blockchain.balance.all(utxo, wallet.getAddresses(), height)
   console.log(balances.MST)
-
 }
 ```
 
 
-Create a function to transfer MST's
+Create a function to transfer MSTs
 
 ```
 async function transferMST() {
@@ -158,32 +143,24 @@ async function transferMST() {
   tx = await wallet.sign(tx))
   tx = await tx.encode())
   tx = await blockchain.transaction.broadcast(tx.toString('hex')))
-
 }
-
 ```
 
 ## Connect to your dApp
 
-To interact with metaversejs in your webapp, you need to reference metaversejs in your HTML.
-
+To interact with `metaversejs` in your webapp, you need to reference `metaversejs` in your HTML.
 ```
-
 <script type="text/javascript" src="/dist/metaverse.min.js"></script>
-
 ```
 
-Also reference your tut2.js file.
-
+Also reference your `tut2.js` file.
 ```
-
 <script type="text/javascript" src="tut2.js"></script>
-
 ```
 
-Verify that you have connected metaverse to the webapp by opening the browser console and typing "Metaverse". You should see the Metaverse object come up and look something like
+Verify that you have connected metaverse to the webapp by opening the browser console and typing "Metaverse". You should see the Metaverse object come up.
 
 Next connect elements to the js functions and youre done!
 
-## Whats next?
+## What's next?
 Continue with the next tutorial and learn how to work with [Metaverse Identifiable Token (MIT)](../3-MITs)
