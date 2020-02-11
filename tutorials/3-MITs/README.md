@@ -120,6 +120,9 @@ console.log(tx)
 
 Create a function to verify a MIT content hash
 ```
+function getMIT(symbol) {
+   return blockchain.MIT.get(symbol)
+}
 ```
 
 
