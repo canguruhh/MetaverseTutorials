@@ -42,33 +42,28 @@ Open `tut1.html` and use this HTML front-end as the base of your app.
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Tutorial 1</title>
   </head>
-  <script ></script>
+  <script></script>
   <body>
 
     <h3> Create new Wallet </h3>
-
     <button>Create New Wallet</button> <br>
-    <input placeholder = "mnemonic"></input> 
-    <button>Import Wallet</button>
+    <input placeholder = "mnemonic"></input> <button>Import Wallet</button>
 
     <h3> Wallet Details</h3>
     <label>mnemonic</label> <br>
     <li> Addresses: </li>
 
     <h3> Check ETP Balance </h3>
-
     <select></select> <label>Balance: </label><br>
     <label>Total Balance</label>
 
     <h3> Send ETP </h3>
-
     <label>send From </label><select></select><br>
     <input placeholder ="sendTo"></input><br>
     <input placeholder = "amount"></input><br>
-
-  <button>Send</button>
+    <button>Send</button>
 
   </body>
 </html>
@@ -78,10 +73,10 @@ You should now be set up to use the Metaverse javascript libraries. We are using
 
 First let's define some key variables
 ```
-var wallet        //An object representing your Metaverse wallet
-var mnemonic      //A mnemonic code word used to generate your wallet
-var addresses     //An array containing addresses belonging to the wallet
-var balances      //A JSON object containing wallet balances
+let wallet        //An object representing your Metaverse Wallet
+let mnemonic      //A mnemonic code word used to generate your Wallet
+let addresses     //An array containing addresses belonging to the wallet
+let balances      //A JSON object containing Wallet balances
 ```
 
 Start by creating a function to generate a new mnemonic
@@ -95,7 +90,6 @@ And a function to create a wallet from the mnemonic, using the testnet keyword s
 ```
 async function createWallet(){
   wallet  = await Metaverse.wallet.fromMnemonic(mnemonic,'testnet')
-
   addresses = await wallet.getAddresses()  // get list of addresses
 }
 ```
@@ -106,7 +100,7 @@ A function to get wallet balances. Note: this is the blockchain object you initi
 ```
 async function getETPBalance(){
 
-  //Get the latest blockchain length
+  //Get the lastest Blockchain Length
   let height = await blockchain.height()  
 
   //Get a list of wallet transactions
@@ -115,7 +109,7 @@ async function getETPBalance(){
   //Get a list of unspent transaction outputs amongst your transactions   
   let utxo = await Metaverse.output.calculateUtxo(txs.transactions, addresses)    
 
-  //Calculate your balances based on the UTXOs
+  //Calculate your balances based on the utxos
   let balances = await blockchain.balance.all(utxo, addresses, height)
 
   let ETPBalance = balances.ETP.available
@@ -128,21 +122,21 @@ And finally, a function to send ETP
 ```
 async function sendETP(amount){
 
-//Define the amount of ETP you want to send
-//Measured in ETP units. There are 100 million units per ETP.
-  var target = {
+  //Define the amount of ETP you want to send
+  //Measured in ETP units. There are 100 million units per ETP.
+  let target = {
       ETP: 100000000 //100 million units = 1 ETP
   };
 
   //Define recipient
-  var recipient_address = "MVbtobP4m44AKsx5PqBbtrBUdycNHxM3eQ";
+  recipient_address = "MVbtobP4m44AKsx5PqBbtrBUdycNHxM3eQ";
 
   //Get latest blockchain length
   let height = await blockchain.height()
   //Get a list of wallet transactions
   let txs = await blockchain.addresses.txs(addresses)
 
-  //Get all utxos
+  //Get all utxo
   let utxos = await Metaverse.output.calculateUtxo(txs.transactions, addresses)
 
   //Collect enough utxos to pay for the transfer
@@ -157,7 +151,7 @@ async function sendETP(amount){
   //Encode the transaction into bytecode
   tx = await tx.encode()
 
-  //Broadcast the transaction to the Metaverse network.
+  //Broadcast the transaction to the metaverse network.
   tx = await blockchain.transaction.broadcast(tx.toString('hex'))
 
   console.log("tx hash: ")
@@ -174,7 +168,7 @@ To test your nodejs code, Create a function called `run()` and make sure it gets
 You can use this mnemonic if there are still funds left in it. Or generate your own and load some test ETP from the [faucet](https://free.mvs.org/) mentioned above.
 
 ```
-var mnemonic = "van juice oak general lyrics gravity hammer shield over eager crew volume survey join lonely purchase kitten artwork mass cousin process mixture add knife"
+let mnemonic = "van juice oak general lyrics gravity hammer shield over eager crew volume survey join lonely purchase kitten artwork mass cousin process mixture add knife"
 ```
 
 ```
@@ -198,7 +192,7 @@ node tut1.js
 You should see an ETP balance, and a transaction hash in your terminal. You can take the transaction hash and view the transaction in the [Metaverse Testnet Blockchain Explorer](https://explorer-testnet.mvs.org/).
 
 
-## Connect to DApp
+## Connect to Your DApp
 
 To interact with `metaversejs` in your web app, you need to reference `metaversejs` in your HTML.
 ```
@@ -212,7 +206,7 @@ Also reference your `tut1.js` file.
 
 Next serve the webpage with
 ```
-python -m SimpleHTTPServer 3333
+python -m SimpleHTTPServer 4444
 ```
 or however you prefer.
 
