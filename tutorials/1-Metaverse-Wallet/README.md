@@ -1,79 +1,69 @@
 # Tutorial 1 - Metaverse Wallet
 
-In this tutorial you will learn how to
+In this tutorial you will learn how to:
 
 * Create a Metaverse wallet
-* Import an Existing wallet
+* Import an existing wallet
 * Check your ETP balance
 * Send transactions programatically
-* Integrate wallet into your dApp
+* Integrate a wallet into your dApp
 
 ## Introduction
 
-Metaverse is a UTXO based blockchain
+Metaverse is an **unspent-transaction-output (UTXO)** based blockchain with ETP being the native currency. It is very similar to the way Bitcoin works.
 
-ETP is the native currency of the Metaverse blockchain. To send and receive ETP you need a Metaverse wallet.
-
-ETP uses a UTXO based model. This means it is very close to the way Bitcoin works.
-
-Every time you receive a transaction, it becomes a UTXO.
-Every time you send a transaction, you collect UTXO's into a transaction input,
+Every time you send a transaction, you collect UTXOs into a transaction input,
 which becomes a UTXO on the receivers end, and the change left over becomes a UTXO on your end.
 
-If this sounds complicated don't worry. Metaverse's library manages UTXO's for you
+Every time you receive a transaction, it's a UTXO you can spend.
 
-For more information on UTXO's look here https://komodoplatform.com/whats-utxo/
+If this sounds complicated, don't worry. Metaverse's library manages UTXOs for you.
 
-In Metaverse, as with Bitcoin, you can generate deterministic wallets using by memnonic code words. This gives you multiple addresses you can send and recieve transactions from.
+For more information on UTXOs, [look here](https://komodoplatform.com/whats-utxo/)
 
-## Hands on Tutorial
+To send and receive ETP you need a Metaverse wallet.
+In Metaverse, as with Bitcoin, you can generate deterministic wallets by using memnonic code words. 
+This gives you multiple addresses you can send and recieve transactions from.
 
-Note: Explicit detailed instructions are given to work with Metaverse, but not always so with HTML elements. If you get stuck with coding HTML elements, you can always refer to w3schools.com
+## Hands-on Tutorial
+
+Note: Explicit detailed instructions are given to work with Metaverse, but not always so with HTML elements. If you get stuck with coding HTML elements, you can always refer to [w3schools.com](https://www.w3schools.com/)
 
 Start by setting up a directory to work in
-
 ```
 cd MetaverseTutorials/tutorials/playground
 touch tut1.html
 touch tut1.js
 ```
 
-Create front end
-
-Open tut1.html and use this HTML front end as the base of your app.
-
+Open `tut1.html` and use this HTML front-end as the base of your app.
 ```
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Tutorial 1</title>
   </head>
-  <script ></script>
+  <script></script>
   <body>
 
     <h3> Create new Wallet </h3>
-
     <button>Create New Wallet</button> <br>
     <input placeholder = "mnemonic"></input> <button>Import Wallet</button>
-
 
     <h3> Wallet Details</h3>
     <label>mnemonic</label> <br>
     <li> Addresses: </li>
 
     <h3> Check ETP Balance </h3>
-
     <select></select> <label>Balance: </label><br>
     <label>Total Balance</label>
 
     <h3> Send ETP </h3>
-
     <label>send From </label><select></select><br>
     <input placeholder ="sendTo"></input><br>
     <input placeholder = "amount"></input><br>
-
-  <button>Send</button>
+    <button>Send</button>
 
   </body>
 </html>
@@ -81,39 +71,32 @@ Open tut1.html and use this HTML front end as the base of your app.
 
 You should now be set up to use the Metaverse javascript libraries. We are using the async/await syntax. The await keyword can only be used in async functions so we will create async functions to perform all actions.
 
-First lets define some key variables
-
+First let's define some key variables
 ```
-var wallet        //An object representing your Metaverse Wallet
-var mnemonic      //A mnemonic code word used to generate your Wallet
-var addresses     //An array containing addresses belonging to the wallet
-var balances      //A JSON object containing Wallet balances
-
+let wallet        //An object representing your Metaverse Wallet
+let mnemonic      //A mnemonic code word used to generate your Wallet
+let addresses     //An array containing addresses belonging to the wallet
+let balances      //A JSON object containing Wallet balances
 ```
 
 Start by creating a function to generate a new mnemonic
-
 ```
 async function generateMnemonic(){
   mnemonic = await Metaverse.wallet.generateMnemonic()
 }
-
 ```
 
-And a function to create a Wallet from the mnemonic, using the testnet keyword since we're on the testnet.
-
-
+And a function to create a wallet from the mnemonic, using the testnet keyword since we're on the testnet
 ```
 async function createWallet(){
   wallet  = await Metaverse.wallet.fromMnemonic(mnemonic,'testnet')
-
   addresses = await wallet.getAddresses()  // get list of addresses
 }
 ```
-Once you've created a wallet you must get some testnet ETP from the testnet faucet.
 
-A function to get Wallet balances
+Once you've created a wallet you must get some testnet ETP from the [testnet faucet](https://free.mvs.org/).
 
+A function to get wallet balances. Note: this is the blockchain object you initialized before.
 ```
 async function getETPBalance(){
 
@@ -133,23 +116,20 @@ async function getETPBalance(){
   return ETPBalance
 
 }
-
 ```
 
-And Finally a function to send ETP
-
+And finally, a function to send ETP
 ```
-
 async function sendETP(amount){
 
-//Define the amount of ETP you want to send
-//Measured in ETP units. There are 100 million units per ETP.
-  var target = {
+  //Define the amount of ETP you want to send
+  //Measured in ETP units. There are 100 million units per ETP.
+  let target = {
       ETP: 100000000 //100 million units = 1 ETP
   };
 
   //Define recipient
-  var recipient_address = "MVbtobP4m44AKsx5PqBbtrBUdycNHxM3eQ";
+  recipient_address = "MVbtobP4m44AKsx5PqBbtrBUdycNHxM3eQ";
 
   //Get latest blockchain length
   let height = await blockchain.height()
@@ -165,7 +145,6 @@ async function sendETP(amount){
   //Build the transaction object
   let tx = await Metaverse.transaction_builder.send(result.utxo, recipient_address, undefined, target, result.utxo[0].address, result.change)
 
-
   //Sign the transaction with your wallet
   tx = await wallet.sign(tx)
 
@@ -180,17 +159,16 @@ async function sendETP(amount){
   //log amount ETP sent to WHO
   console.log(tx)
 }
+```
+
+## Run and Test
+
+To test your nodejs code, Create a function called `run()` and make sure it gets executed in the script.
+
+You can use this mnemonic if there are still funds left in it. Or generate your own and load some test ETP from the [faucet](https://free.mvs.org/) mentioned above.
 
 ```
-## Test NodeJS
-
-To test your nodejs code, Create a function called run() and make sure it gets executed in the script.
-
-For now, since the metaverse faucet is not operational, use this mnemonic:
-
-```
-var mnemonic = "van juice oak general lyrics gravity hammer shield over eager crew volume survey join lonely purchase kitten artwork mass cousin process mixture add knife"
-
+let mnemonic = "van juice oak general lyrics gravity hammer shield over eager crew volume survey join lonely purchase kitten artwork mass cousin process mixture add knife"
 ```
 
 ```
@@ -206,8 +184,7 @@ async function run(){
 }
 ```
 
-now in your terminal run
-
+Now in your terminal run
 ```
 node tut1.js
 ```
@@ -215,33 +192,27 @@ node tut1.js
 You should see an ETP balance, and a transaction hash in your terminal. You can take the transaction hash and view the transaction in the [Metaverse Testnet Blockchain Explorer](https://explorer-testnet.mvs.org/).
 
 
-## Connect to Dapp
+## Connect to Your DApp
 
-To interact with metaversejs in your webapp, you need to reference metaversejs in your HTML.
-
+To interact with `metaversejs` in your web app, you need to reference `metaversejs` in your HTML.
 ```
 <script type="text/javascript" src="/dist/metaverse.min.js"></script>
 ```
 
-Also reference your tut1.js file.
-
+Also reference your `tut1.js` file.
 ```
 <script type="text/javascript" src="tut1.js"></script>
 ```
 
 Next serve the webpage with
-
-
 ```
-python -m SimpleHTTPServer 3333
+python -m SimpleHTTPServer 4444
 ```
+or however you prefer.
 
-or however you prefer
+Verify that you have connected Metaverse to the web app by opening the browser console and typing "Metaverse". You should see the Metaverse object come up.
 
-Verify that you have connected metaverse to the webapp by opening the browser console and typing "Metaverse". You should see the Metaverse object come up and look something like
+Now connect elements to the js functions and you're done!
 
-_TODO: Expand upon once metaversjs referencing is completed_
-Now connect elements to the js functions and youre done!
-
-## Whats next?
+## What's Next?
 Continue with the next tutorial and learn how to [issue and transfer Metaverse Smart Token (MST)](../2-Avatars-and-MSTs)
