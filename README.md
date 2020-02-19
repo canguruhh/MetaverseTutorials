@@ -2,13 +2,11 @@
 Step by step tutorials for the Metaverse Blockchain
 
 This is a series of Metaverse tutorials. To begin, clone this repository
-
 ```
 git clone https://github.com/mvs-org/MetaverseTutorials.git
 ```
 
 Navigate to the tutorial directory
-
 ```
 cd MetaverseTutorials
 ```
