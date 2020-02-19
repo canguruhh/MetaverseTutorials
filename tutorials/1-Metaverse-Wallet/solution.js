@@ -3,17 +3,15 @@
 //     url: "https://explorer-testnet.mvs.org/api/"
 // });
 
-var wallet
-var mnemonic
-var addresses
-var balances
+let wallet
+let mnemonic
+let addresses
+let balances
 
-var hidden = true
+let hidden = true
 
 async function initialize(){
   blockchain = await Blockchain({url: "https://explorer-testnet.mvs.org/api/"})
-  let test = document.getElementById("addressSelect")
-  console.log(test)
 }
 
 async function generateMnemonic(){
@@ -41,15 +39,15 @@ async function importWallet() {
 
 async function showBalances(){
 
-  var balancesTable = document.getElementById("balancesTable");
+  let balancesTable = document.getElementById("balancesTable");
 
   for (i = 0; i < addresses.length; ++i) {
 
-    var row = balancesTable.insertRow(i+1);
+    let row = balancesTable.insertRow(i+1);
 
     // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
+    let cell1 = row.insertCell(0);
+    let cell2 = row.insertCell(1);
 
     // Add some text to the new cells:
     cell1.innerHTML = addresses[i];
@@ -88,34 +86,32 @@ async function populateAddressSelect() {
   let anyOption = document.createElement("option");
   anyOption.value = addresses
   anyOption.innerHTML = "any"
-
   addressSelect.appendChild(anyOption)
 
   for (i = 0; i < addresses.length; ++i) {
-   var opt = document.createElement("option");
+   let opt = document.createElement("option");
    opt.value= [addresses[i]];
    opt.innerHTML = addresses[i];
-
    addressSelect.appendChild(opt);
  }
 }
 
 async function sendETP(){
 
-  let amount = document.getElementById("sendAmount").innerHTML
-  var target = {
+  let amount = document.getElementById("sendAmount").value
+  let recipient_address = document.getElementById("sendTo").value;
+  recipient_address = recipient_address.toString()
+  amount = parseInt(amount)
+  console.log(amount)
+  let target = {
       ETP: amount
   };
-
-  var recipient_address = document.getElementById("sendTo").innerHTML;
-
-  console.log(amount)
   console.log(recipient_address)
   let height = await blockchain.height()
   let txs = await blockchain.addresses.txs(addresses)
 
   //Get all utxo
-  let utxos = await Metaverse.output.calculateUtxo(txs.transactions, wallet.getAddresses())
+  let utxos = await Metaverse.output.calculateUtxo(txs.transactions, addresses)
 
   //Collect utxo for given target
   let result = await Metaverse.output.findUtxo(utxos, target, height)
@@ -136,12 +132,10 @@ async function showHide(){
   if(hidden){
     document.getElementById("mnemonicLabel").innerHTML = mnemonic
     document.getElementById("showHideMnemnonic").innerHTML = "Hide"
-
     hidden = false;
   } else{
     document.getElementById("mnemonicLabel").innerHTML = ""
     document.getElementById("showHideMnemnonic").innerHTML = "Show"
-
     hidden = true;
   }
 }
